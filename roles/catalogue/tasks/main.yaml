@@ -14,7 +14,7 @@
     src: mongo.repo
     dest: /etc/yum.repos.d/mongo.repo
 - name: install mongodb
-  ansible.builtin.package:
+  ansible.builtin.dnf:
     name: mongodb-org
     state: present
 - name: check products loaded or not
