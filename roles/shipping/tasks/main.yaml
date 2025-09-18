@@ -1,0 +1,35 @@
+
+- name: maven-setup
+  include_role:
+    name: common
+    tasks_from: maven-setup
+
+- name: app setup
+  include_role:
+     name: common
+     tasks_from: app-setup
+
+
+
+- name: remaning jar file
+  ansible.builtin.command: mv target/shipping-1.0.jar shipping.jar 
+  args:
+    chdir: /app
+
+- name: import data
+  community.mysql.mysql_db:
+    name: all
+    state: import
+    login_password: RoboShop@1
+    login_user: root
+    login_host: "{{ MYSQL_HOST }}"
+    target: "{{ item }}"
+  loop:
+  - /app/db/schema.sql
+  - /app/db/app-user.sql
+  - /app/db/master-data.sql 
+
+- name: systemd setup
+  include_role:
+    name: common
+    tasks_from: systemd

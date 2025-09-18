@@ -1,0 +1,20 @@
+- name: install maven package
+  ansible.builtin.dnf:
+    name: "{{ item }}"
+    state: present
+  loop:
+  - maven
+  - mysql
+
+- name: install PyMySQL
+  ansible.builtin.pip:
+    name: "{{ item }}"
+    executable: pip3.9
+  loop:
+  - PyMySQL
+  - cryptography
+
+  - name: install maven dependencies
+    ansible.builtin.command: mvn clean package
+    args:
+      chdir: /app
